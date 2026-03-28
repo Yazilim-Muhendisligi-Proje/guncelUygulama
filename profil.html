@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS · Profil & Erişim Yetkileri</title>
+    <title>ASGARD · Profil & Erişim Yetkileri</title>
 
     <!-- Fonts & Icons -->
     <link
@@ -49,10 +49,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wMjUiIC8+PC9zdmc+');
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 1000;
+            background-color: #03050A;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(31, 199, 98, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
 
         /* Grid overlay */
@@ -63,9 +68,9 @@
             width: 100%;
             height: 100%;
             background-image:
-                linear-gradient(rgba(31, 199, 98, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(31, 199, 98, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(31, 199, 98, 0.008) 1.5px, transparent 1.5px),
+                linear-gradient(90deg, rgba(31, 199, 98, 0.008) 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
             pointer-events: none;
             z-index: 5;
         }
@@ -808,28 +813,250 @@
             position: relative;
         }
 
-        .quick-action-btn:hover {
-            background: rgba(31, 199, 98, 0.1);
-            border-color: rgba(31, 199, 98, 0.3);
-            color: #1fc762;
-            transform: scale(1.1);
+        /* Advanced Avatar Styles */
+        .avatar-edit-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
         }
 
-        .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #ef4444;
-            color: white;
-            font-size: 10px;
+        .avatar-preview-large {
+            width: 140px;
+            height: 140px;
+            border-radius: 40px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(31, 199, 98, 0.1), rgba(10, 20, 35, 0.4));
+            border: 2px solid rgba(31, 199, 98, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-size: 48px;
+            font-weight: 800;
+            color: #1fc762;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
         }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #1fc762;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 4px solid #03050A;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload-overlay:hover {
+            transform: scale(1.1) rotate(15deg);
+            background: #4ade80;
+        }
+
+        /* Security List Styles */
+        .security-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .security-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(31, 199, 98, 0.2);
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1fc762;
+            font-size: 18px;
+        }
+
+        .item-text h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .item-text p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* 2FA Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #1fc762;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Session Card Styles */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .session-card {
+            background: rgba(10, 20, 35, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .session-card:hover {
+            border-color: rgba(31, 199, 98, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .session-card.active {
+            border-color: rgba(31, 199, 98, 0.4);
+            background: rgba(31, 199, 98, 0.05);
+        }
+
+        .session-icon {
+            font-size: 24px;
+            color: #1fc762;
+            background: rgba(31, 199, 98, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .session-details {
+            flex: 1;
+        }
+
+        .session-device {
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .session-meta {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .session-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .session-location {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .session-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .session-close-btn:hover {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .active-badge {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+
 
         /* Canvas for particles */
         #particle-canvas {
@@ -890,6 +1117,7 @@
             font-weight: 800;
             background: linear-gradient(to right, #ffffff, #94a3b8);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -1063,6 +1291,149 @@
             background: rgba(255,255,255,0.03);
         }
         
+        /* Profile Tabs & Forms */
+        .profile-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .profile-tabs::-webkit-scrollbar { display: none; }
+        
+        .tab-btn {
+            background: rgba(10, 20, 35, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tab-btn.active {
+            background: rgba(31, 199, 98, 0.2);
+            color: #1fc762;
+            border-color: rgba(31, 199, 98, 0.5);
+            box-shadow: 0 0 30px rgba(31, 199, 98, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            background: rgba(10, 15, 25, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #1fc762;
+            box-shadow: 0 0 0 4px rgba(31, 199, 98, 0.1);
+        }
+        .form-select option { background: #0a0f19; color: white; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #1fc762, #0a8a40);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px -5px rgba(31, 199, 98, 0.4);
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(31, 199, 98, 0.5);
+        }
+        
+        .submit-btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: none;
+        }
+        .submit-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.2);
+        }
+
+        .settings-card {
+            background: rgba(10, 20, 35, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 30px;
+        }
+        .settings-header {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .settings-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .settings-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+        }
+
         /* Modifiye Profil İkon Detay Kartelaları */
         .profile-details-grid {
             display: flex;
@@ -1086,15 +1457,165 @@
             font-size: 13px;
             font-weight: 500;
         }
+
+        /* ASGARD Modal & Advanced Forms */
+        .asgard-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 5, 10, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .asgard-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .asgard-modal {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(10, 20, 35, 0.9);
+            border: 1px solid rgba(31, 199, 98, 0.2);
+            border-radius: 32px;
+            padding: 40px;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8),
+                        0 0 40px rgba(31, 199, 98, 0.1);
+        }
+
+        .asgard-modal-overlay.active .asgard-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .modal-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(31, 199, 98, 0.1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1fc762;
+            font-size: 28px;
+            margin: 0 auto 15px;
+            box-shadow: 0 10px 20px rgba(31, 199, 98, 0.1);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+        }
+
+        .asgard-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        .asgard-select, .asgard-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(124, 58, 237, 0.1); /* Default purple for mixed systems */
+            border-radius: 16px;
+            padding: 14px 18px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .asgard-select option {
+            background: #0d1117;
+            color: #fff;
+        }
+
+        .asgard-select:focus, .asgard-textarea:focus {
+            border-color: #1fc762;
+            background: rgba(31, 199, 98, 0.05);
+            box-shadow: 0 0 0 4px rgba(31, 199, 98, 0.1);
+        }
+
+        .asgard-submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #1fc762, #0a8a40);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px -5px rgba(31, 199, 98, 0.4);
+        }
+
+        .asgard-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(31, 199, 98, 0.5);
+        }
     </style>
     <!-- Auth -->
     <script src="auth.js"></script>
 </head>
-
-<body>
-
-    <!-- Particle Canvas -->
-    <canvas id="particle-canvas"></canvas>
+<body class="bg-[#03050A]">
+    <!-- Particles removed for a professional interface -->
 
     <!-- Grid Overlay -->
     <div class="grid-overlay"></div>
@@ -1106,7 +1627,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-brain text-white text-xl"></i>
                 </div>
-                <span class="logo-text">NEXUS·AI</span>
+                <span class="logo-text">ASGARD·AI</span>
             </div>
             <div class="collapse-btn" id="collapseBtn">
                 <i class="fas fa-chevron-left" id="collapseIcon"></i>
@@ -1237,7 +1758,7 @@
                         <span class="text-xs font-medium text-slate-300">Live</span>
                     </div>
                     <div class="h-4 w-px bg-white/10"></div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-3">
                         <i class="fas fa-shield-alt text-brand text-xs"></i>
                         <span class="text-xs font-medium text-slate-300">Quantum Secure</span>
                     </div>
@@ -1359,16 +1880,42 @@
             <!-- Role Switcher (Removed based on Auth RBAC system) -->
             <div class="role-switcher" id="roleSwitcher" style="display:none;"></div>
 
-            <!-- Permissions Section -->
-            <div class="permissions-section">
-                <div class="section-header">
+            <!-- Profile Tabs Navigation -->
+            <div class="profile-tabs">
+                <button class="tab-btn active" data-tab="tab-permissons">
+                    <i class="fas fa-shield-alt"></i> Erişim Yetkileri
+                </button>
+                <button class="tab-btn" data-tab="tab-edit">
+                    <i class="fas fa-user-edit"></i> Profili Düzenle
+                </button>
+                <button class="tab-btn" data-tab="tab-security">
+                    <i class="fas fa-lock"></i> Hesap Güvenliği
+                </button>
+                <!-- Admin Only Tab -->
+                <button class="tab-btn" data-tab="tab-admin" id="adminTabBtn" style="display: none;">
+                    <i class="fas fa-user-shield"></i> Yönetici Konsolu
+                </button>
+            </div>
+
+            <!-- TAB 1: Permissions Section -->
+            <div class="tab-content active" id="tab-permissons">
+                <div class="permissions-section">
+                    <div class="section-header">
                     <div class="section-title">
                         <i class="fas fa-shield-alt"></i>
                         Erişim Yetkileri · Access Permissions
                     </div>
-                    <div class="section-badge">
-                        <i class="fas fa-info-circle"></i>
-                        Rol tabanlı erişim kontrolü
+                    <div class="flex items-center gap-4">
+                        <div class="section-badge">
+                            <i class="fas fa-info-circle"></i>
+                            Rol tabanlı erişim kontrolü
+                        </div>
+                        <!-- ASGARD Emergency Auth Button -->
+                        <button class="emergency-auth-btn" id="openEmergencyModal">
+                            <div class="pulse-ring"></div>
+                            <i class="fas fa-bolt"></i>
+                            ACİL YETKİ TALEBİ
+                        </button>
                     </div>
                 </div>
 
@@ -1626,290 +2173,697 @@
                         <!-- Filled by JS -->
                     </div>
                 </div>
+                </div>
+            </div> <!-- End Tab 1 (Permissions) -->
+
+            <!-- TAB 2: Edit Profile -->
+            <div class="tab-content" id="tab-edit">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left: Avatar & Security Status -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="glass-premium p-8 flex flex-col items-center">
+                            <div class="avatar-preview-large relative mb-6" id="editAvatarPreview">
+                                <div class="avatar-ring"></div>
+                                <span class="text-4xl font-black">AD</span>
+                                <div class="avatar-upload-overlay" title="Fotoğrafı Değiştir">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <div class="text-center mb-8">
+                                <h3 class="text-xl font-bold text-white mb-1" id="editNameHeader">Admin User</h3>
+                                <p class="text-[10px] text-green-400 font-bold uppercase tracking-widest">ASGARD Level 5 Auth</p>
+                            </div>
+                            <div class="w-full space-y-3">
+                                <button class="asgard-submit-btn" style="margin-top:0; width: 100%;">
+                                    <i class="fas fa-image"></i> Yeni Fotoğraf Yükle
+                                </button>
+                                <button class="asgard-submit-btn submit-btn-danger" style="margin-top:0; width: 100%;">
+                                    <i class="fas fa-trash-alt"></i> Mevcut Fotoğrafı Kaldır
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-premium p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                    <i class="fas fa-shield-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Hesap Güvenlik Analizi</h4>
+                                    <p class="text-[10px] text-slate-400">Security Score 98%</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-slate-400">Yetki Seviyesi</span>
+                                    <span class="px-2 py-1 rounded-md bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase">Elite</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-slate-400">Kimlik Doğrulama</span>
+                                    <span class="text-xs font-bold text-green-400 flex items-center gap-1"><i class="fas fa-check-circle"></i> Onaylı</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-slate-400">Son Güncelleme</span>
+                                    <span class="text-xs font-medium text-slate-200">10:45, Bugün</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Personal Information Form -->
+                    <div class="lg:col-span-2">
+                        <div class="glass-premium p-8 h-full">
+                            <div class="flex items-center justify-between mb-8 pb-6 border-b border-white/5">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                                        <i class="fas fa-id-card text-brand"></i> Kurumsal Kimlik Bilgileri
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">ASGARD ana sistemindeki kişisel verileriniz.</p>
+                                </div>
+                                <div class="px-4 py-2 rounded-xl bg-brand/10 border border-brand/20 text-brand text-[10px] font-bold uppercase tracking-wider">
+                                    Düzenleme Modu
+                                </div>
+                            </div>
+                            
+                            <form onsubmit="event.preventDefault(); showToast('Bilgiler ASGARD sunucularına iletildi!');" class="space-y-8">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                    <div class="form-group">
+                                        <label class="asgard-label">Tam Ad Soyad</label>
+                                        <input type="text" class="asgard-select" id="editFormName" value="Admin User" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="asgard-label">Sistem Rumuzu (Username)</label>
+                                        <input type="text" class="asgard-select" value="admin" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="asgard-label">Kurumsal E-Posta</label>
+                                        <input type="email" class="asgard-select" id="editFormEmail" value="admin@nexus.ai" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="asgard-label">Dahili Telefon</label>
+                                        <input type="tel" class="asgard-select" value="+90 532 000 00 00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="asgard-label">Görev Merkezi (Lokatör)</label>
+                                        <select class="asgard-select">
+                                            <option>İstanbul Genel Merkez</option>
+                                            <option>Ankara AR-GE</option>
+                                            <option>İzmir Operasyon</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="asgard-label">Arayüz Dil Protokolü</label>
+                                        <select class="asgard-select">
+                                            <option>Türkçe (TR-ASGARD)</option>
+                                            <option>English (EN-GLOBAL)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="asgard-label">Biyometrik Profil & Uzmanlık Özeti</label>
+                                    <textarea class="asgard-textarea" rows="4" placeholder="Sistem üzerindeki rolünüzü ve uzmanlık alanlarınızı detaylandırın..."></textarea>
+                                </div>
+
+                                <div class="flex justify-end gap-4 pt-8 border-t border-white/5">
+                                    <button type="button" class="px-6 py-3 rounded-xl hover:bg-white/5 text-slate-400 text-sm font-bold transition-all">Değişiklikleri Geri Al</button>
+                                    <button type="submit" class="asgard-submit-btn" style="width: auto; padding: 14px 40px; margin-top: 0;">
+                                        <i class="fas fa-save"></i> PROTOKOLÜ KAYDET
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- TAB 3: Security -->
+            <div class="tab-content" id="tab-security">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left: Password & 2FA -->
+                    <div class="space-y-8">
+                        <div class="glass-premium p-8">
+                            <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                                        <i class="fas fa-key text-green-400"></i> Şifre Değiştirme Protokolü
+                                    </h3>
+                                    <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Kuantum Korumalı Şifre Protokolü</p>
+                                </div>
+                            </div>
+                            <form onsubmit="handleChangePassword(event)" class="space-y-6" id="securityForm">
+                                <div class="form-group">
+                                    <label class="asgard-label">Mevcut Sistem Şifresi</label>
+                                    <input type="password" class="asgard-select" placeholder="••••••••" required>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="form-group">
+                                        <label class="asgard-label">Yeni Şifre</label>
+                                        <input type="password" class="asgard-select" placeholder="••••••••" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="asgard-label">Yeni Şifre Onayı</label>
+                                        <input type="password" class="asgard-select" placeholder="••••••••" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="asgard-submit-btn w-full">
+                                    <i class="fas fa-sync-alt"></i> ŞİFRE PROTOKOLÜNÜ GÜNCELLE
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="glass-premium p-8">
+                            <div class="flex items-center gap-4 mb-8">
+                                <div class="w-14 h-14 rounded-2xl bg-brand/10 flex items-center justify-center text-brand text-2xl">
+                                    <i class="fas fa-shield-virus"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Gelişmiş Koruma Katmanları</h3>
+                                    <p class="text-xs text-slate-400">İki faktörlü doğrulama ve giriş denetimi.</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-white/3 border border-white/5 hover:border-brand/20 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-white">İki Faktörlü Doğrulama (2FA)</h4>
+                                            <p class="text-[10px] text-slate-400">Girişlerde mobil biyometrik onay istenir.</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked onchange="showToast('2FA Güvenlik Protokolü Güncellendi')">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between p-4 rounded-2xl bg-white/3 border border-white/5 hover:border-blue-500/20 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-white">Giriş Bildirimleri</h4>
+                                            <p class="text-[10px] text-slate-400">Şüpheli girişlerde e-posta uyarısı al.</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Active Sessions -->
+                    <div class="space-y-8">
+                        <div class="glass-premium p-8 h-full">
+                            <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                                        <i class="fas fa-desktop text-blue-400"></i> Aktif Terminal Bağlantıları
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-1">Sisteme şu an bağlı olan yetkili terminaller.</p>
+                                </div>
+                                <button class="px-4 py-2 rounded-xl bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-wider hover:bg-red-500/20 transition-all" onclick="showToast('Tüm harici oturumlar sonlandırıldı!')">
+                                    Tümünü Kapat
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                                <!-- Session 1: Current -->
+                                <div class="p-5 rounded-2xl bg-brand/5 border border-brand/20 flex items-start gap-4 relative group">
+                                    <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center text-brand text-xl">
+                                        <i class="fas fa-laptop-code"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <h4 class="text-sm font-bold text-white">MacBook Pro · Chrome V120</h4>
+                                            <span class="px-2 py-1 rounded-md bg-green-500/10 text-green-400 text-[9px] font-black uppercase tracking-widest">Mevcut Terminal</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 text-[10px] text-slate-400">
+                                            <span><i class="fas fa-globe mr-1"></i> 176.43.12.98</span>
+                                            <span><i class="fas fa-clock mr-1"></i> Şu an Aktif</span>
+                                        </div>
+                                        <p class="text-[10px] text-brand font-bold mt-2"><i class="fas fa-location-dot"></i> İstanbul, Türkiye (Bu cihaz)</p>
+                                    </div>
+                                </div>
+
+                                <!-- Session 2 -->
+                                <div class="p-5 rounded-2xl bg-white/3 border border-white/5 flex items-start gap-4 hover:border-white/10 transition-all group">
+                                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <h4 class="text-sm font-bold text-white">iPhone 14 Pro · ASGARD App</h4>
+                                            <button class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-all text-sm">
+                                                <i class="fas fa-sign-out-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="flex items-center gap-3 text-[10px] text-slate-400">
+                                            <span><i class="fas fa-globe mr-1"></i> 85.105.44.21</span>
+                                            <span><i class="fas fa-clock mr-1"></i> 2 saat önce</span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-500 mt-2">Ankara, Türkiye</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 p-6 rounded-2xl bg-red-500/5 border border-red-500/10">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500">
+                                        <i class="fas fa-radiation"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-sm font-bold text-red-400">Acil Durum Çıkışı</h4>
+                                        <p class="text-[10px] text-slate-400 mt-1">Hesabınızın güvenliğinden şüphe duyuyorsanız tüm terminallerden anında çıkış yapın.</p>
+                                        <button class="mt-4 px-6 py-2 rounded-xl bg-red-500 text-white text-xs font-black hover:bg-red-600 transition-all" onclick="logout()">
+                                            PROTOKOLÜ SONLANDIR
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: Admin Console -->
+            <div class="tab-content" id="tab-admin">
+                <div class="glass-premium p-8 max-w-4xl mx-auto">
+                    <div class="flex items-center justify-between mb-8 pb-6 border-b border-white/5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Sistem Yönetici Konsolu</h3>
+                                <p class="text-xs text-slate-400">Kullanıcı yetkilendirme ve ana sistem kayıt arayüzü.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                            <span class="text-[10px] font-bold text-green-400 uppercase tracking-widest">Master Auth</span>
+                        </div>
+                    </div>
+
+                    <form id="newUserForm" onsubmit="handleNewUser(event)" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            <div class="form-group">
+                                <label class="asgard-label">Tam Ad Soyad</label>
+                                <input type="text" name="name" class="asgard-select" placeholder="Operatörün Adı Soyadı" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="asgard-label">Sistem E-Postası</label>
+                                <input type="email" name="email" class="asgard-select" placeholder="operator@asgard.ai" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="asgard-label">Global Kullanıcı Kimliği (Username)</label>
+                                <input type="text" name="username" class="asgard-select" placeholder="kullanici.kod" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="asgard-label">Başlangıç Şifresi</label>
+                                <input type="password" name="password" class="asgard-select" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="asgard-label">Atanan Departman</label>
+                                <select name="department" class="asgard-select" required>
+                                    <option value="" disabled selected>Departman Seçin...</option>
+                                    <option value="Yönetim Kurulu">Yönetim Kurulu</option>
+                                    <option value="IT">IT</option>
+                                    <option value="IoT">IoT</option>
+                                    <option value="Finans">Finans</option>
+                                    <option value="Otonom Lojistik">Otonom Lojistik</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="asgard-label">Yetkilendirme Rolü</label>
+                                <select name="role" class="asgard-select" required>
+                                    <option value="" disabled selected>Rol Seçin...</option>
+                                    <option value="admin">Sistem Yöneticisi (Admin)</option>
+                                    <option value="ceo">Üst Düzey Yönetici (CEO)</option>
+                                    <option value="user">Standart Operatör (User)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-green-500/5 border border-green-500/10 flex items-start gap-4">
+                            <i class="fas fa-info-circle text-green-400 mt-1"></i>
+                            <p class="text-[10px] text-slate-400 leading-relaxed">
+                                <strong class="text-green-400 uppercase">Önemli Bildiri:</strong> Yeni oluşturulan kullanıcılar varsayılan olarak "Dashboard" ve "Profil" yetkileriyle başlatılır. Ek modül erişimleri onay sürecine tabidir.
+                            </p>
+                        </div>
+
+                        <div class="flex justify-end pt-8 border-t border-white/5">
+                            <button type="submit" class="asgard-submit-btn" style="width: auto; padding: 14px 40px; margin-top:0;">
+                                <i class="fas fa-user-plus"></i> KULLANICIYI SİSTEME EKLE
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 5: Request Role -->
+            <div class="tab-content" id="tab-request">
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <h3 class="settings-title"><i class="fas fa-file-signature text-blue-400"></i> Yeni Yetki Talebi</h3>
+                        <p class="settings-subtitle">Erişiminizin olmadığı sistem modüllerine erişmek için IT departmanına talep formunu doldurunuz.</p>
+                    </div>
+                    <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4 mb-6 flex gap-4 items-start">
+                        <i class="fas fa-info-circle text-blue-400 mt-1"></i>
+                        <p class="text-sm text-blue-200">Yetki talepleriniz doğrudan Baş Güvenlik Yöneticisi (CSO) veya IT Yöneticisi onayına düşer. Onay süreci projenizin durumuna göre değerlendirilir.</p>
+                    </div>
+                    <form onsubmit="event.preventDefault(); alert('Yetki talebiniz 1302 numaralı kayıtla IT departmanına iletildi! Süreç takibini yöneticinizden yapabilirsiniz.');">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Talep Edilen Modül / Departman</label>
+                                <select class="form-select" required>
+                                    <option value="" disabled selected>Erişim İstediğiniz Modülü Seçin...</option>
+                                    <option value="hr">Otonom Lojistik</option>
+                                    <option value="finance">Finans Departmanı Verileri</option>
+                                    <option value="it">IT Veri ve Log Yönetimi</option>
+                                    <option value="ai">Yapay Zeka Karar Kontrol (CSO Onayı Gerekir)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Talep Türü (Rol İsteği)</label>
+                                <select class="form-select" required>
+                                    <option value="view">Sadece Görüntüleme (Read-only)</option>
+                                    <option value="edit">Görüntüleme ve Düzenleme (Read/Write)</option>
+                                    <option value="admin">Yönetici Modülü (Full Access)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Talep Nedeni (Zorunlu İçerik)</label>
+                            <textarea class="form-textarea" required placeholder="Hangi proje veya görev kapsamında bu yetkiye ihtiyaç duyduğunuzu detaylı bir şekilde açıklayınız..."></textarea>
+                        </div>
+                        <div class="flex justify-end mt-4">
+                            <button type="submit" class="submit-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);"><i class="fas fa-paper-plane"></i> Talebi Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div> <!-- End Profile Container -->
+    </div>
+
+    <!-- ASGARD Emergency Authorization Modal -->
+    <div class="asgard-modal-overlay" id="emergencyModal">
+        <div class="asgard-modal">
+            <div class="modal-close" id="closeEmergencyModal">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2 class="modal-title">ACİL YETKİ PROTOKOLÜ</h2>
+                <p class="modal-subtitle">ASGARD Güvenlik Duvarı: Geçici Erişim Talebi</p>
+            </div>
+            <form class="space-y-6" id="emergencyForm">
+                <div class="form-input-group">
+                    <label class="asgard-label">Erişim İstediğiniz Departman / Birim</label>
+                    <select class="asgard-select" style="color: black !important; background: white !important;" required id="emergencyDept">
+                        <option value="" disabled selected>Birim Seçiniz...</option>
+                        <option value="it">IT & Network Infrastructure</option>
+                        <option value="iot">IoT & Production Systems</option>
+                        <option value="finance">Finance & Auditing Hub</option>
+                        <option value="logistics">Autonomous Logistics Grid</option>
+                        <option value="ai">AI Deep Control & Decision</option>
+                    </select>
+                </div>
+                <div class="form-input-group">
+                    <label class="asgard-label">Talebin Teknik Gerekçesi (Ayrıntılı)</label>
+                    <textarea class="asgard-textarea" id="emergencyReason" rows="3" placeholder="Bu yetkiye neden ihtiyaç duyduğunuzu ve hangi operasyonu yürüteceğinizi belirtin..." required></textarea>
+                </div>
+                <div class="form-input-group">
+                    <label class="asgard-label">Gerekli Yetki Seviyesi</label>
+                    <select class="asgard-select" style="color: black !important; background: white !important;" required id="emergencyLevel">
+                        <option value="temporary">Sınırlı Geçici Erişim (2 Saat)</option>
+                        <option value="elevated">Yükseltilmiş Müdahale Yetkisi (6 Saat)</option>
+                        <option value="critical">Kritik Sistem Tam Kontrolü (Gözetimli)</option>
+                    </select>
+                </div>
+                <button type="submit" class="asgard-submit-btn" id="submitEmergency">
+                    <i class="fas fa-shield-virus"></i>
+                    SİSTEM PROTOKOLÜNÜ BAŞLAT
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- Quick Actions (Right Sidebar) -->
-    <div class="quick-actions">
-        <div class="quick-action-btn">
-            <i class="fas fa-search"></i>
-        </div>
-        <div class="quick-action-btn">
-            <i class="fas fa-bell"></i>
-            <span class="badge">3</span>
-        </div>
-        <div class="quick-action-btn">
-            <i class="fas fa-cog"></i>
-        </div>
-        <div class="quick-action-btn">
-            <i class="fas fa-chart-line"></i>
-        </div>
-    </div>
-
-    <script type="module">
-        // Three.js Particle System
-        import * as THREE from 'three';
-
-        const canvas = document.getElementById('particle-canvas');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2000;
-        const posArray = new Float32Array(particlesCount * 3);
-        const colorArray = new Float32Array(particlesCount * 3);
-
-        for (let i = 0; i < particlesCount * 3; i += 3) {
-            const radius = 20 + Math.random() * 10;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-
-            posArray[i] = radius * Math.sin(phi) * Math.cos(theta);
-            posArray[i + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.4;
-            posArray[i + 2] = radius * Math.cos(phi);
-
-            colorArray[i] = 0.2 + Math.random() * 0.3;
-            colorArray[i + 1] = 0.6 + Math.random() * 0.4;
-            colorArray[i + 2] = 0.2 + Math.random() * 0.3;
+    <!-- ASGARD Logic System -->
+    <script>
+        // 1. Helpers & State
+        let currentUser = null;
+        
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-8 right-8 px-6 py-3 rounded-xl text-white font-bold z-[3000] shadow-2xl transition-all duration-500 transform translate-y-20 opacity-0`;
+            toast.style.background = type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ef4444, #991b1b)';
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'} mr-2"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-20', 'opacity-0'), 100);
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
         }
 
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+        // 2. Core Initializer
+        async function init() {
+            const token = getToken();
+            if (!token) { window.location.href = 'login.html'; return; }
 
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.08,
-            vertexColors: true,
-            transparent: true,
-            blending: THREE.AdditiveBlending
-        });
+            try {
+                // First sync with global auth.js
+                currentUser = await initAuth();
+                if (!currentUser) return;
 
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-
-        camera.position.z = 25;
-        camera.position.y = 3;
-        camera.lookAt(0, 0, 0);
-
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.y += 0.0003;
-            particlesMesh.rotation.x += 0.0001;
-            particlesMesh.rotation.y += mouseX * 0.0003;
-            particlesMesh.rotation.x += mouseY * 0.0002;
-            renderer.render(scene, camera);
+                // Professional UI Sync
+                renderUser(currentUser);
+                setupFeatures(currentUser);
+                setupTabs();
+                setupModals();
+                setupSidebar();
+            } catch (err) {
+                console.error("ASGARD Init Error:", err);
+                clearToken();
+                window.location.href = 'login.html';
+            }
         }
-        animate();
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        function renderUser(user) {
+            const elements = {
+                'profileName': user.name,
+                'sidebarName': user.name,
+                'profileEmail': user.email,
+                'sidebarEmail': user.email,
+                'profileInitials': user.initials,
+                'sidebarInitials': user.initials,
+                'userDepartment': user.department,
+                'userPosition': user.role.toUpperCase(),
+                'editFormName': user.name,
+                'editFormEmail': user.email,
+                'editNameHeader': user.name
+            };
 
-        // Sidebar functionality
-        const sidebar = document.getElementById('sidebar');
-        const mainWrapper = document.getElementById('mainWrapper');
-        const collapseBtn = document.getElementById('collapseBtn');
-        const collapseIcon = document.getElementById('collapseIcon');
-        const topNav = document.getElementById('topNav');
-        const backBtn = document.getElementById('backBtn');
-
-        collapseBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            mainWrapper.classList.toggle('sidebar-collapsed');
-            topNav.classList.toggle('sidebar-collapsed');
-            backBtn.classList.toggle('sidebar-collapsed');
-
-            if (sidebar.classList.contains('collapsed')) {
-                collapseIcon.classList.remove('fa-chevron-left');
-                collapseIcon.classList.add('fa-chevron-right');
-            } else {
-                collapseIcon.classList.remove('fa-chevron-right');
-                collapseIcon.classList.add('fa-chevron-left');
+            for (const [id, value] of Object.entries(elements)) {
+                const el = document.getElementById(id);
+                if (!el) continue;
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = value;
+                else el.textContent = value;
             }
-        });
 
-        // Role switching functionality
-        const roleOptions = document.querySelectorAll('.role-option');
-        const roleBadge = document.getElementById('roleBadge');
-        const userDepartment = document.getElementById('userDepartment');
-        const userPosition = document.getElementById('userPosition');
-
-        // Modül elementleri
-        const modules = {
-            finance: {
-                status: document.getElementById('finance-status'),
-                level: document.getElementById('finance-level'),
-                details: document.getElementById('finance-details'),
-                card: document.querySelector('[data-module="finance"]')
-            },
-            iot: {
-                status: document.getElementById('iot-status'),
-                level: document.getElementById('iot-level'),
-                details: document.getElementById('iot-details'),
-                card: document.querySelector('[data-module="iot"]')
-            },
-            it: {
-                status: document.getElementById('it-status'),
-                level: document.getElementById('it-level'),
-                details: document.getElementById('it-details'),
-                card: document.querySelector('[data-module="it"]')
-            },
-            hr: {
-                status: document.getElementById('hr-status'),
-                level: document.getElementById('hr-level'),
-                details: document.getElementById('hr-details'),
-                card: document.querySelector('[data-module="hr"]')
-            },
-            settings: {
-                status: document.getElementById('settings-status'),
-                level: document.getElementById('settings-level'),
-                details: document.getElementById('settings-details'),
-                card: document.querySelector('[data-module="settings"]')
-            },
-            ai: {
-                status: document.getElementById('ai-status'),
-                level: document.getElementById('ai-level'),
-                details: document.getElementById('ai-details'),
-                card: document.querySelector('[data-module="ai"]')
+            // Special handling for avatar initials to not break the design
+            const editAvatar = document.getElementById('editAvatarPreview');
+            if (editAvatar) {
+                const span = editAvatar.querySelector('span');
+                if (span) span.textContent = user.initials;
             }
-        };
-
-        const accessSummary = document.getElementById('accessSummary');
-
-        // ── Auth & Dynamic Profile Info ────────────────────────────────────
-        (async () => {
-            const user = await initAuth();
-            if (!user) return;
-
-            // Sidebar Footer Güncelle
-            const ini = document.getElementById('sidebarInitials');
-            const nm = document.getElementById('sidebarName');
-            const em = document.getElementById('sidebarEmail');
-            if (ini) ini.textContent = user.initials || 'AD';
-            if (nm) nm.textContent = user.name || 'Admin User';
-            if (em) em.textContent = user.email || 'admin@nexus.ai';
-
-            // Profil Hero Card Güncelle
-            document.getElementById('profileInitials').textContent = user.initials;
-            document.getElementById('profileName').textContent = user.name;
-            document.getElementById('profileEmail').textContent = user.email;
-            document.getElementById('userDepartment').textContent = user.department;
-            document.getElementById('userPosition').textContent = user.role.toUpperCase();
 
             const roleBadge = document.getElementById('roleBadge');
-            roleBadge.innerHTML = `<i class="fas fa-id-badge"></i> ${user.role.replace('_', ' ').toUpperCase()}`;
-            roleBadge.className = 'profile-role-badge role-ceo'; // Reuse yellow visual style
+            if (roleBadge) {
+                roleBadge.innerHTML = `<i class="fas fa-id-badge"></i> ${user.role.toUpperCase()}`;
+            }
 
-            // Dinamik Erişim Kartları rendering
-            let moduleCount = 0;
-            const tagCloud = document.getElementById('accessTagCloud');
-            tagCloud.innerHTML = '';
+            updatePermissionsUI(user.pages || []);
+        }
 
-            Object.keys(modules).forEach(key => {
-                const mod = modules[key];
-                const hasAccess = user.pages.includes(key);
-                
-                // Progress bar element
-                const progressElement = document.getElementById(`${key}-progress`);
-                
-                if (hasAccess) {
-                    moduleCount++;
-                    
-                    // Tam Erişim (Aktif)
-                    mod.status.className = 'status-badge status-allowed';
-                    mod.status.innerHTML = '<i class="fas fa-check-circle"></i> AKTİF';
-                    
-                    mod.level.className = 'status-badge status-allowed';
-                    mod.level.innerHTML = 'TAM AKTİF';
-                    
-                    if(progressElement) {
-                        setTimeout(() => {
-                            progressElement.style.width = '100%';
-                            progressElement.className = 'progress-bar green';
-                        }, 300);
-                    }
+        function setupFeatures(user) {
+            if (user.role === 'admin' || user.role === 'ceo') {
+                const adminBtn = document.getElementById('adminTabBtn');
+                if (adminBtn) adminBtn.style.display = 'flex';
+            }
+            document.getElementById('newUserForm')?.addEventListener('submit', handleNewUser);
+            document.getElementById('securityForm')?.addEventListener('submit', handleChangePassword);
+            document.getElementById('emergencyForm')?.addEventListener('submit', handleEmergencyAuth);
+        }
 
-                    const detailRows = mod.details.querySelectorAll('.detail-row');
-                    detailRows.forEach(row => {
-                        const tag = row.querySelector('.permission-tag');
-                        tag.innerHTML = '<i class="fas fa-power-off"></i> AÇIK';
-                        tag.className = 'permission-tag status-allowed';
-                    });
-                    
-                    // Add Tag to Cloud
-                    const modName = mod.card.querySelector('.permission-title').innerText;
-                    tagCloud.innerHTML += `<span class="cloud-tag"><i class="fas fa-check"></i> ${modName}</span>`;
+        async function handleNewUser(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const userObj = Object.fromEntries(formData.entries());
+            userObj.initials = userObj.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            userObj.pages = ["dashboard", "profile"];
+            try {
+                const res = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                    body: JSON.stringify(userObj)
+                });
+                if (res.ok) {
+                    showToast(`${userObj.username} başarıyla ASGARD sistemine kaydedildi.`);
+                    e.target.reset();
                 } else {
-                    // Kısıtlı (Kapalı)
-                    mod.status.className = 'status-badge status-restricted';
-                    mod.status.innerHTML = '<i class="fas fa-ban"></i> KAPALI';
-                    
-                    mod.level.className = 'status-badge status-restricted';
-                    mod.level.innerHTML = 'ERİŞİM YOK';
-                    
-                    if(progressElement) {
-                        progressElement.style.width = '0%';
-                        progressElement.className = 'progress-bar red';
-                    }
-
-                    const detailRows = mod.details.querySelectorAll('.detail-row');
-                    detailRows.forEach(row => {
-                        const tag = row.querySelector('.permission-tag');
-                        tag.innerHTML = '<i class="fas fa-lock"></i> KAPALI';
-                        tag.className = 'permission-tag status-restricted';
-                    });
-                    
-                    // Add Restricted Tag to Cloud
-                    const modName = mod.card.querySelector('.permission-title').innerText;
-                    tagCloud.innerHTML += `<span class="cloud-tag restricted"><i class="fas fa-times"></i> ${modName}</span>`;
+                    const data = await res.json();
+                    showToast(data.detail || 'Kayıt başarısız', 'error');
                 }
-            });
-            
-            // Update Top Stats
-            const statModuleCount = document.getElementById('statModuleCount');
-            if(statModuleCount) statModuleCount.innerText = moduleCount;
-        })();
+            } catch (err) { showToast('Bağlantı hatası', 'error'); }
+        }
 
-        // Back button URL routing
-        const navMap = {
-            dashboard: 'dashboard.html',
-            it: 'it.html',
-            iot: 'ıot.html',
-            finance: 'finans.html',
-            hr: 'inasnKaynaklari.html',
-            access: 'erişim.html',
-            ai: 'yapayZekaV2.html',
-            settings: 'ayarlar.html',
-            profile: 'profil.html'
-        };
+        async function handleChangePassword(e) {
+            e.preventDefault();
+            const form = e.target;
+            const old_password = form.querySelector('input[placeholder="••••••••"]').value;
+            const passwords = form.querySelectorAll('input[type="password"]');
+            if (passwords[1].value !== passwords[2].value) { showToast('Yeni şifreler uyuşmuyor!', 'error'); return; }
+            try {
+                const res = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                    body: JSON.stringify({ old_password, new_password: passwords[1].value })
+                });
+                if (res.ok) { showToast('Şifreniz başarıyla güncellendi.'); form.reset(); }
+                else { const data = await res.json(); showToast(data.detail || 'Hata oluştu', 'error'); }
+            } catch (err) { showToast('Bağlantı hatası', 'error'); }
+        }
 
-        const backBtnEl = document.getElementById('backBtn');
-        if (backBtnEl) {
-            backBtnEl.addEventListener('click', () => {
-                window.location.href = 'dashboard.html';
+        async function handleEmergencyAuth(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitEmergency');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PROTOKOL KURULUYOR...';
+            btn.disabled = true;
+            const payload = {
+                department: document.getElementById('emergencyDept').value,
+                reason: document.getElementById('emergencyReason').value,
+                level: document.getElementById('emergencyLevel').value
+            };
+            try {
+                const res = await fetch('/api/emergency-auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    btn.innerHTML = '<i class="fas fa-check"></i> ONAYLANDI';
+                    btn.style.background = '#059669';
+                    showToast('Acil yetki ALPHA modu aktif edildi.');
+                    setTimeout(() => {
+                        document.getElementById('emergencyModal').classList.remove('active');
+                        document.body.style.overflow = '';
+                        btn.innerHTML = original;
+                        btn.style.background = '';
+                        btn.disabled = false;
+                    }, 2000);
+                } else showToast('Yetkilendirme başarısız', 'error');
+            } catch (err) { showToast('Kritik bağlantı hatası', 'error'); btn.disabled = false; btn.innerHTML = original; }
+        }
+
+        function setupTabs() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(btn.dataset.tab).classList.add('active');
+                };
             });
         }
 
-        // Menu items navigation binding handled by auth.js bindNavigation()
+        function setupModals() {
+            const modal = document.getElementById('emergencyModal');
+            document.getElementById('openEmergencyModal').onclick = () => { modal.classList.add('active'); document.body.style.overflow = 'hidden'; };
+            document.getElementById('closeEmergencyModal').onclick = () => { modal.classList.remove('active'); document.body.style.overflow = ''; };
+            modal.onclick = (e) => { if (e.target === modal) { modal.classList.remove('active'); document.body.style.overflow = ''; }};
+        }
 
-        // ── Auth ──────────────────────────────────────────────────────────
-        (async () => {
-            // Because profil.html already fetches 'user' in an independent IIFE, 
-            // calling initAuth will cleanly bind the navigation and guard logic.
-            await initAuth();
-        })();
+        function setupSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainWrapper = document.getElementById('mainWrapper');
+            const collapseBtn = document.getElementById('collapseBtn');
+            const collapseIcon = document.getElementById('collapseIcon');
+            const topNav = document.getElementById('topNav');
+            const backBtn = document.getElementById('backBtn');
+
+            collapseBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainWrapper.classList.toggle('sidebar-collapsed');
+                topNav.classList.toggle('sidebar-collapsed');
+                if (backBtn) backBtn.classList.toggle('sidebar-collapsed');
+                collapseIcon.className = sidebar.classList.contains('collapsed') ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+            });
+        }
+
+        function updatePermissionsUI(pages) {
+            const modules = [
+                { id: 'it', name: 'IT Departmanı', icon: 'fa-microchip' },
+                { id: 'iot', name: 'IoT Departmanı', icon: 'fa-wifi' },
+                { id: 'finance', name: 'Finans Departmanı', icon: 'fa-chart-line' },
+                { id: 'hr', name: 'Otonom Lojistik', icon: 'fa-users' },
+                { id: 'settings', name: 'Sistem Ayarları', icon: 'fa-cog' },
+                { id: 'ai', name: 'Yapay Zeka', icon: 'fa-brain' }
+            ];
+            const cloud = document.getElementById('accessTagCloud');
+            if (cloud) cloud.innerHTML = '';
+            let count = 0;
+            modules.forEach(m => {
+                const has = pages.includes(m.id);
+                if (has) count++;
+                const status = document.getElementById(`${m.id}-status`);
+                const prog = document.getElementById(`${m.id}-progress`);
+                const level = document.getElementById(`${m.id}-level`);
+                if (status) {
+                    status.textContent = has ? 'ERİŞİM AKTİF' : 'ERİŞİM YOK';
+                    status.className = `status-badge ${has ? 'status-allowed' : 'status-restricted'}`;
+                }
+                if (prog) {
+                    prog.style.width = has ? '100%' : '0%';
+                    prog.className = `progress-bar ${has ? 'green' : 'red'}`;
+                }
+                if (level) level.style.display = has ? 'block' : 'none';
+                
+                const details = document.getElementById(`${m.id}-details`);
+                if (details) {
+                    details.querySelectorAll('.permission-tag').forEach(tag => {
+                        tag.innerHTML = `<i class="fas ${has ? 'fa-power-off' : 'fa-lock'}"></i> ${has ? 'AÇIK' : 'KAPALI'}`;
+                        tag.className = `permission-tag ${has ? 'status-allowed' : 'status-restricted'}`;
+                    });
+                }
+
+                if (cloud) {
+                    const tag = document.createElement('span');
+                    tag.className = `cloud-tag ${has ? '' : 'restricted'}`;
+                    tag.innerHTML = `<i class="fas ${has ? 'fa-check' : 'fa-times'}"></i> ${m.name}`;
+                    cloud.appendChild(tag);
+                }
+            });
+            const stat = document.getElementById('statModuleCount');
+            if (stat) stat.innerText = count;
+        }
+
+        function logout() { 
+            clearToken(); 
+            window.location.href = 'login.html'; 
+        }
+
+        window.onload = init;
     </script>
 </body>
 

@@ -36,10 +36,16 @@ JWT_SECRET = "nexus-aiops-super-secret-2025"
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_HOURS = 8
 
-# ─── Load Users ───────────────────────────────────────────────────────────────
+# ─── Load & Save Users ────────────────────────────────────────────────────────
 def load_users() -> list:
+    if not USERS_PATH.exists():
+        return []
     with open(USERS_PATH, encoding="utf-8") as f:
         return json.load(f)["users"]
+
+def save_users(users: list):
+    with open(USERS_PATH, "w", encoding="utf-8") as f:
+        json.dump({"users": users}, f, indent=2, ensure_ascii=False)
 
 # ─── GAT Model ────────────────────────────────────────────────────────────────
 class GATAnomalyModel(nn.Module):
@@ -126,10 +132,28 @@ COLS = [
 NODE_NAMES = ["IT", "IoT", "Finans", "Lojistik"]
 
 
-# ─── Auth Models ──────────────────────────────────────────────────────────────
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+class UserCreateRequest(BaseModel):
+    username: str
+    password: str
+    role: str
+    name: str
+    initials: str
+    email: str
+    department: str
+    pages: list[str] = ["dashboard", "profile"]
+
+class PasswordChangeRequest(BaseModel):
+    old_password: str
+    new_password: str
+
+class EmergencyAuthRequest(BaseModel):
+    department: str
+    reason: str
+    level: str
 
 
 # ─── /api/login ───────────────────────────────────────────────────────────────
@@ -154,7 +178,6 @@ async def login(req: LoginRequest):
     return {"token": token, "user": {k: v for k, v in user.items() if k != "password"}}
 
 
-# ─── /api/me ──────────────────────────────────────────────────────────────────
 @app.get("/api/me")
 async def me(authorization: str = Header(None)):
     if not authorization or not authorization.startswith("Bearer "):
@@ -167,6 +190,47 @@ async def me(authorization: str = Header(None)):
         raise HTTPException(status_code=401, detail="Token süresi doldu")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Geçersiz token")
+
+# ─── /api/change-password ─────────────────────────────────────────────────────
+@app.post("/api/change-password")
+async def change_password(req: PasswordChangeRequest, authorization: str = Header(None)):
+    curr_user = await me(authorization)
+    users = load_users()
+    
+    user_idx = next((i for i, u in enumerate(users) if u["username"] == curr_user["sub"]), None)
+    if user_idx is None:
+        raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+    
+    if users[user_idx]["password"] != req.old_password:
+        raise HTTPException(status_code=400, detail="Mevcut şifre hatalı")
+    
+    users[user_idx]["password"] = req.new_password
+    save_users(users)
+    return {"message": "Şifre başarıyla güncellendi"}
+
+# ─── /api/users (Create User - Admin Only) ───────────────────────────────────
+@app.post("/api/users")
+async def create_user(req: UserCreateRequest, authorization: str = Header(None)):
+    curr_user = await me(authorization)
+    if curr_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Bu işlem için yönetici yetkisi gereklidir")
+    
+    users = load_users()
+    if any(u["username"] == req.username for u in users):
+        raise HTTPException(status_code=400, detail="Bu kullanıcı adı zaten alınmış")
+    
+    new_user = req.model_dump()
+    users.append(new_user)
+    save_users(users)
+    return {"message": f"Kullanıcı {req.username} başarıyla oluşturuldu"}
+
+# ─── /api/emergency-auth ──────────────────────────────────────────────────────
+@app.post("/api/emergency-auth")
+async def emergency_auth(req: EmergencyAuthRequest, authorization: str = Header(None)):
+    curr_user = await me(authorization)
+    # Production logic would send alerts to CSO/Admin
+    print(f"[EMERGENCY PROTOCOL] User {curr_user['sub']} requested {req.level} for {req.department}. Reason: {req.reason}")
+    return {"status": "success", "protocol": "ALPHA-SECURE", "timestamp": datetime.now().isoformat()}
 
 
 # ─── /api/health ──────────────────────────────────────────────────────────────

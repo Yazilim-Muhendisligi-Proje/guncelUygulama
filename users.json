@@ -8,7 +8,17 @@
       "initials": "SY",
       "email": "admin@nexus.ai",
       "department": "Yönetim",
-      "pages": ["dashboard", "it", "iot", "finance", "hr", "access", "ai", "settings", "profile"]
+      "pages": [
+        "dashboard",
+        "it",
+        "iot",
+        "finance",
+        "hr",
+        "access",
+        "ai",
+        "settings",
+        "profile"
+      ]
     },
     {
       "username": "finans_mudur",
@@ -18,7 +28,11 @@
       "initials": "AK",
       "email": "ayse.kaya@nexus.ai",
       "department": "Finans",
-      "pages": ["dashboard", "finance", "profile"]
+      "pages": [
+        "dashboard",
+        "finance",
+        "profile"
+      ]
     },
     {
       "username": "it_mudur",
@@ -28,7 +42,11 @@
       "initials": "MY",
       "email": "mehmet.yilmaz@nexus.ai",
       "department": "Bilgi Teknolojileri",
-      "pages": ["dashboard", "it", "profile"]
+      "pages": [
+        "dashboard",
+        "it",
+        "profile"
+      ]
     },
     {
       "username": "iot_mudur",
@@ -38,7 +56,11 @@
       "initials": "FD",
       "email": "fatma.demir@nexus.ai",
       "department": "IoT ve Üretim",
-      "pages": ["dashboard", "iot", "profile"]
+      "pages": [
+        "dashboard",
+        "iot",
+        "profile"
+      ]
     },
     {
       "username": "ik_mudur",
@@ -48,7 +70,24 @@
       "initials": "AÇ",
       "email": "ali.celik@nexus.ai",
       "department": "İnsan Kaynakları",
-      "pages": ["dashboard", "hr", "profile"]
+      "pages": [
+        "dashboard",
+        "hr",
+        "profile"
+      ]
+    },
+    {
+      "username": "vubh",
+      "password": "vbh",
+      "role": "ceo",
+      "name": "cgvh",
+      "initials": "C",
+      "email": "gvbh@main.vom",
+      "department": "IoT",
+      "pages": [
+        "dashboard",
+        "profile"
+      ]
     }
   ]
 }
