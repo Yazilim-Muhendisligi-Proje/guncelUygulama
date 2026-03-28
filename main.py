@@ -37,15 +37,61 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_HOURS = 8
 
 # ─── Load & Save Users ────────────────────────────────────────────────────────
-def load_users() -> list:
-    if not USERS_PATH.exists():
-        return []
-    with open(USERS_PATH, encoding="utf-8") as f:
-        return json.load(f)["users"]
+# ─── SQLite User Helpers ──────────────────────────────────────────────────────
+def get_db_connection():
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.row_factory = sqlite3.Row
+    return conn
 
-def save_users(users: list):
-    with open(USERS_PATH, "w", encoding="utf-8") as f:
-        json.dump({"users": users}, f, indent=2, ensure_ascii=False)
+def get_user_by_username(username: str):
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    conn.close()
+    if user:
+        # Convert Row to dict and handle comma-separated pages
+        u = dict(user)
+        u["pages"] = u["pages"].split(",") if u["pages"] else []
+        return u
+    return None
+
+def save_new_user(user_data: dict):
+    conn = get_db_connection()
+    pages_str = ",".join(user_data.get("pages", ["dashboard", "profile"]))
+    conn.execute('''
+        INSERT INTO users (username, password, name, initials, email, department, role, pages)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (
+        user_data["username"],
+        user_data["password"],
+        user_data["name"],
+        user_data["initials"],
+        user_data["email"],
+        user_data["department"],
+        user_data["role"],
+        pages_str
+    ))
+    conn.commit()
+    conn.close()
+
+def update_user_db(username: str, update_data: dict):
+    conn = get_db_connection()
+    # Build query dynamically based on provided fields
+    fields = []
+    values = []
+    for k, v in update_data.items():
+        if k == "pages" and isinstance(v, list):
+            v = ",".join(v)
+        fields.append(f"{k} = ?")
+        values.append(v)
+    
+    if not fields:
+        return
+        
+    query = f"UPDATE users SET {', '.join(fields)} WHERE username = ?"
+    values.append(username)
+    conn.execute(query, values)
+    conn.commit()
+    conn.close()
 
 # ─── GAT Model ────────────────────────────────────────────────────────────────
 class GATAnomalyModel(nn.Module):
@@ -146,6 +192,11 @@ class UserCreateRequest(BaseModel):
     department: str
     pages: list[str] = ["dashboard", "profile"]
 
+class ProfileUpdateRequest(BaseModel):
+    name: str | None = None
+    email: str | None = None
+    initials: str | None = None
+
 class PasswordChangeRequest(BaseModel):
     old_password: str
     new_password: str
@@ -159,9 +210,8 @@ class EmergencyAuthRequest(BaseModel):
 # ─── /api/login ───────────────────────────────────────────────────────────────
 @app.post("/api/login")
 async def login(req: LoginRequest):
-    users = load_users()
-    user = next((u for u in users if u["username"] == req.username and u["password"] == req.password), None)
-    if not user:
+    user = get_user_by_username(req.username)
+    if not user or user["password"] != req.password:
         raise HTTPException(status_code=401, detail="Kullanıcı adı veya şifre hatalı")
 
     payload = {
@@ -191,21 +241,30 @@ async def me(authorization: str = Header(None)):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Geçersiz token")
 
+# ─── /api/profile/update ──────────────────────────────────────────────────────
+@app.post("/api/profile/update")
+async def update_profile(req: ProfileUpdateRequest, authorization: str = Header(None)):
+    curr_user = await me(authorization)
+    update_data = {k: v for k, v in req.model_dump().items() if v is not None}
+    if not update_data:
+        return {"message": "Güncellenecek veri yok"}
+    
+    update_user_db(curr_user["sub"], update_data)
+    return {"message": "Profil başarıyla güncellendi", "updated": update_data}
+
 # ─── /api/change-password ─────────────────────────────────────────────────────
 @app.post("/api/change-password")
 async def change_password(req: PasswordChangeRequest, authorization: str = Header(None)):
     curr_user = await me(authorization)
-    users = load_users()
+    user = get_user_by_username(curr_user["sub"])
     
-    user_idx = next((i for i, u in enumerate(users) if u["username"] == curr_user["sub"]), None)
-    if user_idx is None:
+    if not user:
         raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
     
-    if users[user_idx]["password"] != req.old_password:
+    if user["password"] != req.old_password:
         raise HTTPException(status_code=400, detail="Mevcut şifre hatalı")
     
-    users[user_idx]["password"] = req.new_password
-    save_users(users)
+    update_user_db(curr_user["sub"], {"password": req.new_password})
     return {"message": "Şifre başarıyla güncellendi"}
 
 # ─── /api/users (Create User - Admin Only) ───────────────────────────────────
@@ -215,14 +274,39 @@ async def create_user(req: UserCreateRequest, authorization: str = Header(None))
     if curr_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Bu işlem için yönetici yetkisi gereklidir")
     
-    users = load_users()
-    if any(u["username"] == req.username for u in users):
+    if get_user_by_username(req.username):
         raise HTTPException(status_code=400, detail="Bu kullanıcı adı zaten alınmış")
     
-    new_user = req.model_dump()
-    users.append(new_user)
-    save_users(users)
+    save_new_user(req.model_dump())
     return {"message": f"Kullanıcı {req.username} başarıyla oluşturuldu"}
+
+# ─── /api/admin/users (List Users - Admin Only) ──────────────────────────────
+@app.get("/api/admin/users")
+async def list_users(authorization: str = Header(None)):
+    curr_user = await me(authorization)
+    if curr_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Bu işlem için yönetici yetkisi gereklidir")
+    
+    conn = get_db_connection()
+    users = conn.execute("SELECT username, name, email, department, role FROM users").fetchall()
+    conn.close()
+    return [dict(u) for u in users]
+
+# ─── /api/admin/users/{username} (Delete User - Admin Only) ─────────────────
+@app.delete("/api/admin/users/{username}")
+async def delete_user(username: str, authorization: str = Header(None)):
+    curr_user = await me(authorization)
+    if curr_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Bu işlem için yönetici yetkisi gereklidir")
+    
+    if username == curr_user["sub"]:
+        raise HTTPException(status_code=400, detail="Kendi hesabınızı silemezsiniz")
+        
+    conn = get_db_connection()
+    conn.execute("DELETE FROM users WHERE username = ?", (username,))
+    conn.commit()
+    conn.close()
+    return {"message": f"Kullanıcı {username} başarıyla silindi"}
 
 # ─── /api/emergency-auth ──────────────────────────────────────────────────────
 @app.post("/api/emergency-auth")

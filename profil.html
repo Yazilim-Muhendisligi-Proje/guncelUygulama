@@ -836,6 +836,7 @@
             font-weight: 800;
             color: #1fc762;
             box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
         }
 
         .avatar-upload-overlay {
@@ -1082,24 +1083,10 @@
                 box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
             }
         }
-
-        /* --- NEW PROFILE STYLES --- */
-        @keyframes spin-ring {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .avatar-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent 0%, rgba(31, 199, 98, 0.2) 40%, rgba(31, 199, 98, 1) 100%);
-            transform: translate(-50%, -50%);
-            animation: spin-ring 4s linear infinite;
-            z-index: -1;
+        .profile-avatar {
+            z-index: 1;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #4ade80, #0a8a40); /* Default */
         }
 
         .profile-avatar {
@@ -1577,8 +1564,8 @@
         }
 
         .asgard-select option {
-            background: #0d1117;
-            color: #fff;
+            background: #ffffff;
+            color: #000000;
         }
 
         .asgard-select:focus, .asgard-textarea:focus {
@@ -1609,6 +1596,92 @@
         .asgard-submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 15px 30px -5px rgba(31, 199, 98, 0.5);
+        }
+
+        .asgard-danger-btn {
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: white !important;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .asgard-danger-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -10px rgba(239, 68, 68, 0.5);
+            border-color: #ef4444;
+        }
+
+        .asgard-cancel-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .asgard-cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+        }
+
+        .asgard-outline-btn {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .asgard-outline-btn:hover {
+            background: rgba(31, 199, 98, 0.05);
+            border-color: rgba(31, 199, 98, 0.3);
+            color: #1fc762 !important;
+            transform: translateY(-2px);
+        }
+
+        .asgard-danger-outline-btn {
+            background: transparent;
+            color: rgba(239, 68, 68, 0.6) !important;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .asgard-danger-outline-btn:hover {
+            background: rgba(239, 68, 68, 0.05);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #ef4444 !important;
+            transform: translateY(-2px);
         }
     </style>
     <!-- Auth -->
@@ -1715,7 +1788,7 @@
         <!-- Sidebar Footer -->
         <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-white/5">
             <div class="flex items-center gap-3">
-                <div
+                <div id="sidebarAvatar"
                     class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                     <span class="text-xs font-bold" id="sidebarInitials">AD</span>
                 </div>
@@ -1739,7 +1812,7 @@
         <div class="top-nav" id="topNav">
             <div class="glass-premium px-6 py-3">
                 <div class="flex items-center gap-3">
-                    <div
+                    <div id="topNavAvatar"
                         class="w-8 h-8 rounded-full bg-gradient-to-br from-brand to-green-600 flex items-center justify-center">
                         <i class="fas fa-user text-white text-sm"></i>
                     </div>
@@ -1786,8 +1859,7 @@
 
             <!-- Profile Hero Card -->
             <div class="profile-hero">
-                <div class="profile-avatar">
-                    <div class="avatar-ring"></div>
+                <div class="profile-avatar" id="avatarCircle">
                     <div class="avatar-placeholder" id="profileInitials">AY</div>
                     <div class="online-indicator"></div>
                 </div>
@@ -2183,7 +2255,6 @@
                     <div class="lg:col-span-1 space-y-6">
                         <div class="glass-premium p-8 flex flex-col items-center">
                             <div class="avatar-preview-large relative mb-6" id="editAvatarPreview">
-                                <div class="avatar-ring"></div>
                                 <span class="text-4xl font-black">AD</span>
                                 <div class="avatar-upload-overlay" title="Fotoğrafı Değiştir">
                                     <i class="fas fa-camera"></i>
@@ -2193,12 +2264,12 @@
                                 <h3 class="text-xl font-bold text-white mb-1" id="editNameHeader">Admin User</h3>
                                 <p class="text-[10px] text-green-400 font-bold uppercase tracking-widest">ASGARD Level 5 Auth</p>
                             </div>
-                            <div class="w-full space-y-3">
-                                <button class="asgard-submit-btn" style="margin-top:0; width: 100%;">
-                                    <i class="fas fa-image"></i> Yeni Fotoğraf Yükle
+                            <div class="flex gap-3 w-full justify-center">
+                                <button class="asgard-outline-btn flex-1">
+                                    <i class="fas fa-image"></i> GÖRSEL YÜKLE
                                 </button>
-                                <button class="asgard-submit-btn submit-btn-danger" style="margin-top:0; width: 100%;">
-                                    <i class="fas fa-trash-alt"></i> Mevcut Fotoğrafı Kaldır
+                                <button class="asgard-danger-outline-btn flex-1">
+                                    <i class="fas fa-trash-alt"></i> KALDIR
                                 </button>
                             </div>
                         </div>
@@ -2245,19 +2316,19 @@
                                 </div>
                             </div>
                             
-                            <form onsubmit="event.preventDefault(); showToast('Bilgiler ASGARD sunucularına iletildi!');" class="space-y-8">
+                            <form onsubmit="handleUpdateProfile(event)" class="space-y-8" id="editProfileForm">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                                     <div class="form-group">
                                         <label class="asgard-label">Tam Ad Soyad</label>
-                                        <input type="text" class="asgard-select" id="editFormName" value="Admin User" required>
+                                        <input type="text" name="name" class="asgard-select" id="editFormName" value="Admin User" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="asgard-label">Sistem Rumuzu (Username)</label>
-                                        <input type="text" class="asgard-select" value="admin" readonly>
+                                        <input type="text" class="asgard-select" id="editFormUsername" value="admin" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label class="asgard-label">Kurumsal E-Posta</label>
-                                        <input type="email" class="asgard-select" id="editFormEmail" value="admin@nexus.ai" required>
+                                        <input type="email" name="email" class="asgard-select" id="editFormEmail" value="admin@nexus.ai" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="asgard-label">Dahili Telefon</label>
@@ -2286,8 +2357,8 @@
                                 </div>
 
                                 <div class="flex justify-end gap-4 pt-8 border-t border-white/5">
-                                    <button type="button" class="px-6 py-3 rounded-xl hover:bg-white/5 text-slate-400 text-sm font-bold transition-all">Değişiklikleri Geri Al</button>
-                                    <button type="submit" class="asgard-submit-btn" style="width: auto; padding: 14px 40px; margin-top: 0;">
+                                    <button type="button" class="px-6 py-3 rounded-xl hover:bg-white/5 text-slate-400 text-sm font-bold transition-all" onclick="renderUser(currentUser)">Değişiklikleri Geri Al</button>
+                                    <button type="submit" class="asgard-submit-btn" id="updateProfileBtn" style="width: auto; padding: 14px 40px; margin-top: 0;">
                                         <i class="fas fa-save"></i> PROTOKOLÜ KAYDET
                                     </button>
                                 </div>
@@ -2470,7 +2541,7 @@
                         </div>
                     </div>
 
-                    <form id="newUserForm" onsubmit="handleNewUser(event)" class="space-y-8">
+                    <form id="newUserForm" class="space-y-8 mb-12">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                             <div class="form-group">
                                 <label class="asgard-label">Tam Ad Soyad</label>
@@ -2523,6 +2594,35 @@
                             </button>
                         </div>
                     </form>
+
+                    <!-- User List Table -->
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h4 class="text-lg font-bold text-white flex items-center gap-3">
+                                <i class="fas fa-users text-brand"></i> Kayıtlı Personel Listesi
+                            </h4>
+                            <button onclick="loadAdminUsers()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 transition-all">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-white/5">
+                                        <th class="py-4 px-2 text-[10px] font-black uppercase text-slate-500 tracking-widest">Kullanıcı</th>
+                                        <th class="py-4 px-2 text-[10px] font-black uppercase text-slate-500 tracking-widest">Departman</th>
+                                        <th class="py-4 px-2 text-[10px] font-black uppercase text-slate-500 tracking-widest">Rol</th>
+                                        <th class="py-4 px-2 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminUserList" class="divide-y divide-white/5">
+                                    <tr>
+                                        <td colspan="4" class="py-8 text-center text-slate-500 italic text-sm">Yükleniyor...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -2617,6 +2717,30 @@
         </div>
     </div>
 
+    <!-- ASGARD Confirmation Modal -->
+    <div class="asgard-modal-overlay" id="confirmModal">
+        <div class="asgard-modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <div class="modal-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2 class="modal-title" id="confirmTitle">PROTOKOL FESHİ</h2>
+                <p class="modal-subtitle" id="confirmSubtitle">ASGARD Güvenlik Onayı</p>
+            </div>
+            <div class="py-6">
+                <p class="text-slate-300 text-center leading-relaxed" id="confirmMessage">
+                    Bu işlem geri alınamaz. Devam etmek istediğinize emin misiniz?
+                </p>
+            </div>
+            <div class="flex gap-4 mt-4">
+                <button id="confirmNoBtn" class="asgard-cancel-btn flex-1">İPTAL</button>
+                <button id="confirmYesBtn" class="asgard-danger-btn flex-1">
+                    <i class="fas fa-user-slash"></i> SİL
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ASGARD Logic System -->
     <script>
         // 1. Helpers & State
@@ -2633,6 +2757,33 @@
                 toast.classList.add('translate-y-20', 'opacity-0');
                 setTimeout(() => toast.remove(), 500);
             }, 4000);
+        }
+
+        async function showCustomConfirm(title, message, isDanger = true) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('confirmModal');
+                const titleEl = document.getElementById('confirmTitle');
+                const msgEl = document.getElementById('confirmMessage');
+                const yesBtn = document.getElementById('confirmYesBtn');
+                const noBtn = document.getElementById('confirmNoBtn');
+
+                titleEl.textContent = title;
+                msgEl.textContent = message;
+                modal.classList.add('active');
+
+                const cleanup = (val) => {
+                    modal.classList.remove('active');
+                    yesBtn.onclick = null;
+                    noBtn.onclick = null;
+                    resolve(val);
+                };
+
+                yesBtn.onclick = () => cleanup(true);
+                noBtn.onclick = () => cleanup(false);
+                
+                // Clicking overlay to cancel
+                modal.onclick = (e) => { if(e.target === modal) cleanup(false); };
+            });
         }
 
         // 2. Core Initializer
@@ -2693,55 +2844,244 @@
             }
 
             updatePermissionsUI(user.pages || []);
+            updateAvatarTheme(user);
+        }
+
+        function updateAvatarTheme(user) {
+            const themes = {
+                'IT': { bg: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', text: '#fff' },
+                'IoT': { bg: 'linear-gradient(135deg, #ef4444, #b91c1c)', text: '#fff' },
+                'Finans': { bg: 'linear-gradient(135deg, #22c55e, #15803d)', text: '#fff' },
+                'Lojistik': { bg: 'linear-gradient(135deg, #a855f7, #7e22ce)', text: '#fff' },
+                'Yönetim': { bg: 'linear-gradient(135deg, #f59e0b, #b45309)', text: '#fff' },
+                'HR': { bg: 'linear-gradient(135deg, #ec4899, #be185d)', text: '#fff' }
+            };
+
+            const theme = themes[user.department] || themes['Yönetim'];
+            
+            const avatarMain = document.getElementById('avatarCircle');
+            const avatarEdit = document.getElementById('editAvatarPreview');
+            const avatarSidebar = document.getElementById('sidebarAvatar');
+            const avatarTopNav = document.getElementById('topNavAvatar');
+            
+            if (avatarMain) avatarMain.style.background = theme.bg;
+            if (avatarEdit) avatarEdit.style.background = theme.bg;
+            if (avatarSidebar) avatarSidebar.style.background = theme.bg;
+            if (avatarTopNav) avatarTopNav.style.background = theme.bg;
+            
+            const initialsMain = document.getElementById('profileInitials');
+            const initialsSidebar = document.getElementById('sidebarInitials');
+            const initialsTopNav = document.getElementById('topNavInitials');
+
+            if (initialsMain) initialsMain.style.color = theme.text;
+            if (initialsSidebar) initialsSidebar.style.color = theme.text;
+            if (initialsTopNav) initialsTopNav.style.color = theme.text;
         }
 
         function setupFeatures(user) {
             if (user.role === 'admin' || user.role === 'ceo') {
                 const adminBtn = document.getElementById('adminTabBtn');
                 if (adminBtn) adminBtn.style.display = 'flex';
+                loadAdminUsers();
             }
-            document.getElementById('newUserForm')?.addEventListener('submit', handleNewUser);
-            document.getElementById('securityForm')?.addEventListener('submit', handleChangePassword);
-            document.getElementById('emergencyForm')?.addEventListener('submit', handleEmergencyAuth);
+
+            // Prevent multiple listener bindings
+            const forms = {
+                'newUserForm': handleNewUser,
+                'securityForm': handleChangePassword,
+                'emergencyForm': handleEmergencyAuth
+            };
+
+            for (const [id, handler] of Object.entries(forms)) {
+                const form = document.getElementById(id);
+                if (form && !form.dataset.initialized) {
+                    form.addEventListener('submit', handler);
+                    form.dataset.initialized = 'true';
+                }
+            }
+        }
+
+        async function handleUpdateProfile(e) {
+            e.preventDefault();
+            const btn = document.getElementById('updateProfileBtn');
+            if (btn.disabled) return;
+
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GÜNCELLENİYOR...';
+            btn.disabled = true;
+
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+            payload.initials = payload.name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+            try {
+                const res = await fetch('/api/profile/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    showToast('Profil protokolü başarıyla güncellendi.');
+                    // Update current user locally and re-render
+                    currentUser.name = payload.name;
+                    currentUser.email = payload.email;
+                    currentUser.initials = payload.initials;
+                    renderUser(currentUser);
+                } else {
+                    const data = await res.json();
+                    showToast(data.detail || 'Güncelleme başarısız', 'error');
+                }
+            } catch (err) { showToast('Bağlantı hatası', 'error'); }
+            finally {
+                btn.innerHTML = original;
+                btn.disabled = false;
+            }
+        }
+
+        async function loadAdminUsers() {
+            const list = document.getElementById('adminUserList');
+            if (!list) return;
+            try {
+                const res = await fetch('/api/admin/users', {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                if (!res.ok) throw new Error('Yükleme hatası');
+                const users = await res.json();
+                list.innerHTML = '';
+                users.forEach(u => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-white/5 hover:bg-white/[0.02] transition-all';
+                    tr.innerHTML = `
+                        <td class="py-4 px-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center text-brand font-bold text-xs">
+                                    ${u.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">${u.name}</div>
+                                    <div class="text-[10px] text-slate-500">${u.username}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-2">
+                            <span class="text-xs text-slate-300 font-medium">${u.department}</span>
+                        </td>
+                        <td class="py-4 px-2">
+                            <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter ${u.role === 'admin' ? 'bg-brand/20 text-brand' : 'bg-blue-500/20 text-blue-400'}">
+                                ${u.role}
+                            </span>
+                        </td>
+                        <td class="py-4 px-2 text-right">
+                            <button onclick="deleteUser('${u.username}')" class="p-2 text-slate-500 hover:text-red-500 transition-all ${u.username === currentUser.username ? 'opacity-0 pointer-events-none' : ''}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                    list.appendChild(tr);
+                });
+            } catch (err) {
+                list.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-red-400">Veriler yüklenemedi.</td></tr>';
+            }
+        }
+
+        async function deleteUser(username) {
+            const confirmed = await showCustomConfirm(
+                'PROTOKOL FESHİ', 
+                `${username} adlı kullanıcıyı ASGARD sisteminden silmek istediğinize emin misiniz?`
+            );
+            if (!confirmed) return;
+
+            try {
+                const res = await fetch(`/api/admin/users/${username}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                if (res.ok) {
+                    showToast(`${username} sistemden temizlendi.`);
+                    loadAdminUsers();
+                } else {
+                    const data = await res.json();
+                    showToast(data.detail || 'Silme başarısız', 'error');
+                }
+            } catch (err) { showToast('Bağlantı hatası', 'error'); }
         }
 
         async function handleNewUser(e) {
             e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            if (btn.disabled) return;
+
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SİSTEME EKLENİYOR...';
+
             const formData = new FormData(e.target);
             const userObj = Object.fromEntries(formData.entries());
             userObj.initials = userObj.name.split(' ').map(n => n[0]).join('').toUpperCase();
             userObj.pages = ["dashboard", "profile"];
+
             try {
                 const res = await fetch('/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
                     body: JSON.stringify(userObj)
                 });
+
                 if (res.ok) {
                     showToast(`${userObj.username} başarıyla ASGARD sistemine kaydedildi.`);
                     e.target.reset();
+                    loadAdminUsers();
                 } else {
                     const data = await res.json();
-                    showToast(data.detail || 'Kayıt başarısız', 'error');
+                    showToast(data.detail || 'Kayıt başarısız!', 'error');
                 }
-            } catch (err) { showToast('Bağlantı hatası', 'error'); }
+            } catch (err) {
+                showToast('Kritik bağlantı hatası oluştu!', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            }
         }
 
         async function handleChangePassword(e) {
             e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            if (btn.disabled) return;
+
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GÜNCELLENİYOR...';
+
             const form = e.target;
             const old_password = form.querySelector('input[placeholder="••••••••"]').value;
             const passwords = form.querySelectorAll('input[type="password"]');
-            if (passwords[1].value !== passwords[2].value) { showToast('Yeni şifreler uyuşmuyor!', 'error'); return; }
+            
+            if (passwords[1].value !== passwords[2].value) { 
+                showToast('Yeni şifreler uyuşmuyor!', 'error'); 
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                return; 
+            }
+
             try {
                 const res = await fetch('/api/change-password', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
                     body: JSON.stringify({ old_password, new_password: passwords[1].value })
                 });
-                if (res.ok) { showToast('Şifreniz başarıyla güncellendi.'); form.reset(); }
-                else { const data = await res.json(); showToast(data.detail || 'Hata oluştu', 'error'); }
-            } catch (err) { showToast('Bağlantı hatası', 'error'); }
+                if (res.ok) { 
+                    showToast('Şifreniz başarıyla güncellendi.'); 
+                    form.reset(); 
+                } else { 
+                    const data = await res.json(); 
+                    showToast(data.detail || 'Hata oluştu', 'error'); 
+                }
+            } catch (err) { 
+                showToast('Bağlantı hatası', 'error'); 
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            }
         }
 
         async function handleEmergencyAuth(e) {
